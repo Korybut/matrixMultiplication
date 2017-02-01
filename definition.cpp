@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include "header.h"
 
-// ALOKACJA PAMIÊCI DLA MACIERZY
+// ALLOCATION ARRAY
 float** allocMatrixEX(int height, int width){
 	float** matrix = new float*[height];
 	for (int i = 0; i < height; ++i)
@@ -11,14 +11,14 @@ float** allocMatrixEX(int height, int width){
     return matrix;
 }
 
-// USUWANIE PAMIÊCI PO MACIERZY
+// DELETE ARRAY
 void deleteMatrixEX(float**& matrix, int height){
     for (int i = 0; i < height; ++i)
     		delete matrix[i];
 	delete matrix;
 }
 
-// GENEROWANIE MACIERZY
+// MAPPING ZERO NEW ARRAY
 void generateMX(float**& matrix, int size){
 	float number;
 	cout << "Podaj wartosci macierzy: ";
@@ -29,41 +29,33 @@ void generateMX(float**& matrix, int size){
             matrix[i][j] = number;
 }
 
-//LICZENIE ŒREDNIEJ WARTOSCI MACIERZY
+//COUNTING MIDDLE VALUE
 float midvalue(float**& MC, int size){
 	float mid_v = 0;
 	for (int i=0; i<size; i++){
         for (int j=0; j<size; j++)
             mid_v+=MC[i][j];
-       // cout << "\nsuma komorek: " << mid_v;
+       // cout << "\nmiddle value: " << mid_v;
 	}
-    //cout << "\nkomorka 100,50: " << MC[99][49] << endl;
-   // cout << "komorka 50,158: " << MC[49][158] << endl;
+    //cout << "\ncell 100,50: " << MC[99][49] << endl;
+   // cout << "cell 50,158: " << MC[49][158] << endl;
 	return mid_v/(size*size);
 }
 
-// KOPIOWANIE MACIERZY
+// COPYING ARRAY
 void copyMX(float**& matrix, float**& MX0, int size){
 	for (int i=0; i<size; i++)
         for (int j=0; j<size; j++)
             matrix[i][j] = MX0[i][j];
 }
 
-// MNO¯ENIE MACIERZY
+// MULTIPLICATION
 float** multiply(float**& MX0, float**& MX1, float**& MX2, int size){
-	/* for(int y=0; y<size; y++){
+	for(int i=0; i<size; i++){
 		for(int j=0; j<size; j++){
-			for(int i=0; i<size; i++){
-				MX0[y][j]+=MX1[y][i]*MX2[i][j];
-			}
-		}
-		//cout << "mnozenie kolumny " << y << " macierzy " << MX0 << endl;
-	}*/
-	for(int i=0; i<size; i++){ // przesuniêcie obliczania o jeden wiersz w dó³ macierzyA
-		for(int j=0; j<size; j++){ // przesuniêcie obliczania o jedn¹ kolumnê w prawo macierzyB
 			MX0[i][j]=0;
-			for(int k=0; k<size; k++){ // pêtla mno¿enia wierszaA i kolumnyB
-				MX0[i][j]+=MX1[i][k]*MX2[k][j]; // mno¿enie
+			for(int k=0; k<size; k++){
+				MX0[i][j]+=MX1[i][k]*MX2[k][j];
 			}
 		}
 	}
@@ -76,22 +68,20 @@ float** add(float**& MX0, float**& MX1, float**& MX2, int size){
 	for (int i=0; i<size/2; i++){
         for (int j=0; j<size/2; j++)
             MX0[i][j] = MX1[i][j]+MX2[i][j];
-    	//cout << "dodawanie kolumny " << i << " macierzy " << MX0 << endl;
     }
 	return MX0;
 }
 
-// ODEJMOWANIE MACIERZY
+// SUBSTRACTION
 float** subtract(float**& MX0, float**& MX1, float**& MX2, int size){
 	for (int i=0; i<size/2; i++){
         for (int j=0; j<size/2; j++)
             MX0[i][j] = MX1[i][j]-MX2[i][j];
-    	//cout << "odejmowanie kolumny " << i << " macierzy " << MX0 << endl;
     }
 	return MX0;
 }
 
-// PODZIA£ G£OWNYCH MACIERZY NA ÆWIARTKI
+// SUBDIVIDING ON QUARTER
 void subdivide(float**MX0, float**& matrix, int i, int j, int size){
 	int x=i;
 	for (int a=0; a<size; a++)
@@ -106,7 +96,7 @@ void subdivide(float**MX0, float**& matrix, int i, int j, int size){
 	}
 }
 
-// KOÑCOWE SUMOWANIE MACIERZY WYNIKOWEJ
+// KOÅƒCOWE SUMOWANIE MACIERZY WYNIKOWEJ
 void summary(float**& MOC, float**& c11, float**& c12, float**& c21, float**& c22, int size){
 	int x=0;
 	for (int a=0; a<size/2; a++)
@@ -154,7 +144,7 @@ void summary(float**& MOC, float**& c11, float**& c12, float**& c21, float**& c2
 	}
 }
 
-// WYŒWIETLANIE MACIERZY
+// WYÅšWIETLANIE MACIERZY
 void showM(float**& MX0, int size){
 	for (int i=0; i<size; i++){
         for (int j=0; j<size; j++){
@@ -170,7 +160,7 @@ void showM(float**& MX0, int size){
 float** strassen(float**& MXC, float**& MXA, float**& MXB, int value){
 int size = value;
     
-    /* ALOKACJA PAMIÊCI NA POTRZEBY MACIERZY OPERACYJNYCH */
+    /* ALOKACJA PAMIÄ˜CI NA POTRZEBY MACIERZY OPERACYJNYCH */
     float** matrixA = allocMatrixEX(size, size);
     float** matrixB = allocMatrixEX(size, size);
     float** matrixC = allocMatrixEX(size, size);
@@ -193,7 +183,7 @@ int size = value;
     float** M7 = allocMatrixEX(size/2,size/2);
     /* KONIEC ALOKACJI */
     
-    /* PRZYPISANIE WARTOŒCI DO MACIERZY I ICH PODZIA£ NA ÆWIARTKI */
+    /* PRZYPISANIE WARTOÅšCI DO MACIERZY I ICH PODZIAÅ NA Ä†WIARTKI */
     
     copyMX(matrixA, MXA, size);
     	subdivide(A11, matrixA, 0, 0, size/2);
@@ -220,10 +210,10 @@ int size = value;
     	//showM(B22, size/2);
 	//	system("pause");
     deleteMatrixEX(matrixB, size);		
-	/* KONIEC PRZYPISYWANIA I PODZIA£U MACIERZY WEJŒCIOWYCH */
+	/* KONIEC PRZYPISYWANIA I PODZIAÅU MACIERZY WEJÅšCIOWYCH */
     
     /* OBLICZANIE MACIERZY OPERACYJNYCH */
-    // jeœli ma dzieliæ dalej to mno¿enie odbywa siê za pomoc¹ funkcji strassen(), w innym wypadku za pomoc¹ funkcji multiply() //
+    // jeÅ›li ma dzieliÄ‡ dalej to mnoÅ¼enie odbywa siÄ™ za pomocÄ… funkcji strassen(), w innym wypadku za pomocÄ… funkcji multiply() //
     
     float** temp0 = allocMatrixEX(size/2,size/2);
     float** temp1 = allocMatrixEX(size/2,size/2);
@@ -280,7 +270,7 @@ int size = value;
 			M7=multiply(M7, temp0, temp1, size/2);
 	}
 	
-	/* KONIEC OBLICZEÑ OPERACYJNYCH */
+	/* KONIEC OBLICZEÅƒ OPERACYJNYCH */
     
     deleteMatrixEX(A11, size/2);
     deleteMatrixEX(A12, size/2);
@@ -300,7 +290,7 @@ int size = value;
     float** temp2 = allocMatrixEX(size/2,size/2);
     float** temp3 = allocMatrixEX(size/2,size/2);
     
-	/* OSTATECZNE SUMOWANIE WARTOŒCI WYJŒCIOWYCH */
+	/* OSTATECZNE SUMOWANIE WARTOÅšCI WYJÅšCIOWYCH */
 	temp2 = add(temp2, M1, M4, size);
 	temp3 = subtract(temp3, temp2, M5, size);
 	C11=add(C11, temp3, M7, size);
@@ -321,7 +311,7 @@ int size = value;
     deleteMatrixEX(temp2, size/2);
     deleteMatrixEX(temp3, size/2);
     
-	/* SK£ADANIE MACIERZY WYJŒCIOWEJ */
+	/* SKÅADANIE MACIERZY WYJÅšCIOWEJ */
 	summary(MXC, C11, C12, C21, C22, size);
     
     deleteMatrixEX(C11, size/2);
